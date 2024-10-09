@@ -25,5 +25,5 @@ func main() {
 	if err != nil {
 		log.Fatalf("could not get person: %v", err)
 	}
-	log.Printf("Cuenta: %s, Saldo: %s", personResponse.Name, personResponse.Email)
+	log.Printf("Name: %s, Email: %s", personResponse.Name, personResponse.Email)
 }
