@@ -21,6 +21,6 @@ CREATE TABLE IF NOT EXISTS cuentas (
 DO $$
 BEGIN
     IF EXISTS (SELECT 1 FROM pg_tables WHERE tablename = 'users') THEN
-        INSERT INTO users (name, email) VALUES ('Juan Perez', 'juan@example.com');
+        INSERT INTO users (name, email) VALUES ('Juan ', 'juan@.com');
     END IF;
 END $$;
