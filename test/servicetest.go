@@ -1,23 +1,29 @@
-package service_test
+package main
 
 import (
 	"context"
-	"gomicrobase/internal/model"
-	"gomicrobase/internal/repository"
-	"gomicrobase/internal/service"
-	"testing"
+	api "gomicrobase/api/proto"
+	"log"
+	"time"
 
-	"github.com/stretchr/testify/assert"
+	"google.golang.org/grpc"
 )
 
-func TestCreatePerson(t *testing.T) {
-	repo := repository.NewMockPersonAccountRepository()
-	svc := service.NewPersonAccountService(repo)
+func main() {
+	conn, err := grpc.Dial("localhost:50052", grpc.WithInsecure(), grpc.WithBlock())
+	if err != nil {
+		log.Fatalf("did not connect: %v", err)
+	}
+	defer conn.Close()
+	c := api.NewPersonAccountServiceClient(conn)
 
-	person := &model.Person{Name: "John Doe", Email: "john@example.com"}
-	createdPerson, err := svc.CreatePerson(context.Background(), person)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
 
-	assert.NoError(t, err)
-	assert.Equal(t, person.Name, createdPerson.Name)
-	assert.Equal(t, person.Email, createdPerson.Email)
+	persona := &api.Person{Name: "Juan", Email: "miaCj@example.com", Id: 1}
+	personResponse, err := c.GetPerson(ctx, persona)
+	if err != nil {
+		log.Fatalf("could not get person: %v", err)
+	}
+	log.Printf("Cuenta: %s, Saldo: %s", personResponse.Name, personResponse.Email)
 }

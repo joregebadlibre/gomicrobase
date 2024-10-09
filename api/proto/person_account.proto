@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package api;
 
-option go_package = "gomicrobase/api/proto;proto";
+option go_package = "api/proto;api";
 
 message Person {
     int32 id = 1;

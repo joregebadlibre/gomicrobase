@@ -1,13 +1,15 @@
-# Usar la imagen oficial de PostgreSQL
-FROM postgres:latest
+# Usa una imagen base oficial de Go
+FROM golang:1.23.2-alpine
 
-# Establecer variables de entorno para PostgreSQL
-ENV POSTGRES_USER=postgres
-ENV POSTGRES_PASSWORD=postgres
-ENV POSTGRES_DB=postgres
+# Establece el directorio de trabajo dentro del contenedor
+WORKDIR /app
 
-# Copiar archivos de inicialización (opcional)
-COPY ./init.sql /docker-entrypoint-initdb.d/
 
-# Exponer el puerto de PostgreSQL
-EXPOSE 5432
+# Copia el código fuente de la aplicación
+COPY . .
+
+# descarga las dependencias
+RUN go mod tidy && go mod download
+
+# Comando por defecto para ejecutar la aplicación
+CMD ["go", "run", "/app/cmd/server/main.go"]

@@ -6,12 +6,19 @@ import (
 	"gomicrobase/internal/repository"
 )
 
-type PersonAccountService struct {
-	repo repository.PersonAccountRepository
+type PersonAccountServiceInterface interface {
+	CreatePerson(ctx context.Context, person *model.Person) (*model.Person, error)
+	GetPerson(ctx context.Context, id int32) (*model.Person, error)
+	CreateAccount(ctx context.Context, cuenta *model.Account) (*model.Account, error)
+	GetAccount(ctx context.Context, id int32) (*model.Account, error)
 }
 
-func NewPersonAccountService(r repository.PersonAccountRepository) *PersonAccountService {
-	return &PersonAccountService{repo: r}
+type PersonAccountService struct {
+	repo *repository.PersonAccountRepository
+}
+
+func NewPersonAccountService(repo repository.PersonAccountRepository) PersonAccountService {
+	return PersonAccountService{repo: &repo}
 }
 
 func (s *PersonAccountService) CreatePerson(ctx context.Context, person *model.Person) (*model.Person, error) {
@@ -24,3 +31,12 @@ func (s *PersonAccountService) GetPerson(ctx context.Context, id int32) (*model.
 }
 
 // Similar functions for Account
+
+func (s *PersonAccountService) CreateAccount(ctx context.Context, cuenta *model.Account) (*model.Account, error) {
+	err := s.repo.CreateAccount(cuenta)
+	return cuenta, err
+}
+
+func (s *PersonAccountService) GetAccount(ctx context.Context, id int32) (*model.Account, error) {
+	return s.repo.GetAccount(id)
+}

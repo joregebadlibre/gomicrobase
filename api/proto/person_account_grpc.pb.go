@@ -4,7 +4,7 @@
 // - protoc             v5.28.2
 // source: api/proto/person_account.proto
 
-package proto
+package api
 
 import (
 	context "context"
