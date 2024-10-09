@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package api;
+
+option go_package = "gomicrobase/api/proto;proto";
+
+message Person {
+    int32 id = 1;
+    string name = 2;
+    string email = 3;
+}
+
+message Account {
+    int32 id = 1;
+    int32 person_id = 2;
+    float balance = 3;
+}
+
+service PersonAccountService {
+    rpc CreatePerson (Person) returns (Person);
+    rpc GetPerson (Person) returns (Person);
+    rpc CreateAccount (Account) returns (Account);
+    rpc GetAccount (Account) returns (Account);
+}
