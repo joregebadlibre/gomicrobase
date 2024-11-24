@@ -24,3 +24,10 @@ BEGIN
         INSERT INTO users (name, email) VALUES ('Juan ', 'juan@.com');
     END IF;
 END $$;
+
+DO $$
+BEGIN
+    IF EXISTS (SELECT 1 FROM pg_tables WHERE tablename = 'personas') THEN
+        INSERT INTO public.personas (id, nombre, email) VALUES(nextval('personas_id_seq'::regclass), 'JOrge', 'jorge@l.com');
+    END IF;
+END $$;
